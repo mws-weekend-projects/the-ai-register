@@ -58,9 +58,10 @@ const App: React.FC = () => {
       // Update URL with compressed frontpage
       const compressed = compressState(results);
       updateUrl({ fp: compressed, art: null });
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("The hamsters powering the server died. Try again.");
+      const msg = error?.message || "Unknown error";
+      alert(`The hamsters powering the server died. Error: ${msg}`);
     } finally {
       setLoading(false);
     }
@@ -75,11 +76,17 @@ const App: React.FC = () => {
       window.scrollTo(0, 0);
 
       // Update URL with compressed article (and keep frontpage if possible, but prioritization handles restoration)
-      const compressedArt = compressState(fullArticle);
-      updateUrl({ art: compressedArt }); // We can keep 'fp' or remove it to shorten URL. Removing for cleaner specific link.
-    } catch (error) {
+      try {
+        const compressedArt = compressState(fullArticle);
+        updateUrl({ art: compressedArt }); // We can keep 'fp' or remove it to shorten URL. Removing for cleaner specific link.
+      } catch (urlError) {
+        console.warn("URL update failed (probably too long), but continuing...", urlError);
+        // Do not crash if URL is too long, just let the user read the article
+      }
+    } catch (error: any) {
       console.error(error);
-      alert("Failed to fetch the scoop. The PR department is blocking us.");
+      const msg = error?.message || "Unknown error";
+      alert(`Failed to fetch the scoop. The PR department is blocking us. Error: ${msg}`);
     } finally {
       setLoading(false);
     }

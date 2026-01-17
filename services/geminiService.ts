@@ -93,8 +93,9 @@ export const generateArticle = async (summary: ArticleSummary): Promise<FullArti
     Return ONLY the Markdown content. Do not wrap in JSON.
   `;
 
+  // Switched to flash-preview for better reliability/speed on free tier keys compared to pro
   const response = await ai.models.generateContent({
-    model: 'gemini-3-pro-preview', 
+    model: 'gemini-3-flash-preview', 
     contents: prompt,
   });
 
