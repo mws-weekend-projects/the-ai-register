@@ -1,0 +1,5 @@
+{
+  "name": "El Reg AI Clone",
+  "description": "A satirical tech news generator mimicking The Register using Gemini AI. Enter topics, get snarky headlines, and read full generated articles.",
+  "requestFramePermissions": []
+}
